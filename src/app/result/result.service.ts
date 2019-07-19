@@ -23,7 +23,7 @@ export class ResultService {
   }
 
   public getAllResult() : Array<ResultModel> {
-    return null;
+    return [];
   }
 
   public getAllResultSeen() : Array<ResultModel> {
