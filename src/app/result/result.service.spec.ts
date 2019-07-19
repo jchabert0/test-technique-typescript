@@ -47,11 +47,18 @@ describe('ResultService', () => {
 
     beforeEach(() => {
       // init le service avec 3 resultats
+	  const result1: ResultModel = {id: 1,idOwner:11,idRecipients:[111],isSeen:false,eventResults:[],contentOfResult:"Test1"};
+	  const result2: ResultModel = {id: 2,idOwner:22,idRecipients:[222],isSeen:false,eventResults:[],contentOfResult:"Test2"};
+	  const result3: ResultModel = {id: 3,idOwner:33,idRecipients:[333],isSeen:false,eventResults:[],contentOfResult:"Test3"};
+      resultService = new ResultService();
+      resultService.addResult(result1);
+	  resultService.addResult(result2);
+	  resultService.addResult(result3);
     });
 
     it("devrait avoir une liste de 3 resultats non vue aprés l\'ajout de 3 resultat.",
       fakeAsync(() => {
-        expect(false).toEqual(true);
+        expect(resultService.getAllResult().length).toEqual(3);
       })
     );
 
