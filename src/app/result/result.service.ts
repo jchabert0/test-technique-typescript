@@ -13,16 +13,25 @@ public results: ResultService[];
   constructor() 
   
   {
-	  this.results = new Array<ResultService>();
+	this.results = new Array<ResultModel>();
+	this.resultsSeen = new Array<ResultModel>();
   }
 
   public addResult(newResult:ResultModel) {
-   this.results.push(newResult);
+	
+	this.results.push(newResult);
+	
   }
 
   public seenResult(idResult:number) {
-    
-  }
+	  
+	for (let result of this.results) {
+		if (idResult == result.id) {
+				result.isSeen = true;
+				this.resultsSeen.push(result);
+			}
+		}
+	}
 
   public unseenResult(idResult:number) {
     
@@ -33,7 +42,7 @@ public results: ResultService[];
   }
 
   public getAllResultSeen() : Array<ResultModel> {
-    return null;
+	return this.resultsSeen;
   }
 
   public getAllResultUnSeen() : Array<ResultModel> {

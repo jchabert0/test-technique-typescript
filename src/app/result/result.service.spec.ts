@@ -37,7 +37,7 @@ describe('ResultService', () => {
       fakeAsync(() => {
         resultService.seenResult(46);
         expect(resultService.getAllResultSeen().length).toEqual(1);
-        expect(resultService.getAllResult()[1].isSeen).toEqual(true);
+        expect(resultService.getAllResult()[0].isSeen).toEqual(true);
       })
     );
   });
