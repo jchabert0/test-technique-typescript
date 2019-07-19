@@ -7,11 +7,17 @@ import { unusedValueExportToPlacateAjd } from '@angular/core/src/render3/interfa
   providedIn: 'root'
 })
 export class ResultService {
+	
+public results: ResultService[];
 
-  constructor() { }
+  constructor() 
+  
+  {
+	  this.results = new Array<ResultService>();
+  }
 
   public addResult(newResult:ResultModel) {
-    
+   this.results.push(newResult);
   }
 
   public seenResult(idResult:number) {
@@ -23,7 +29,7 @@ export class ResultService {
   }
 
   public getAllResult() : Array<ResultModel> {
-    return [];
+    return this.results;
   }
 
   public getAllResultSeen() : Array<ResultModel> {
