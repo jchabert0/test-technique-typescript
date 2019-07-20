@@ -88,7 +88,13 @@ describe('ResultService', () => {
 
     it("devrait avoir les 3 resultats vue dans la liste aprés qu\'il soit tous vue",
       fakeAsync(() => {
-        expect(false).toEqual(true);
+        resultService.seenResult(1);
+		resultService.seenResult(2);
+		resultService.seenResult(3);
+        expect(resultService.getAllResultSeen().length).toEqual(3);
+			for (var i = 0; i < resultService.getAllResult().length; i++) {
+				expect(resultService.getAllResult()[i].isSeen).toEqual(true);
+			}		
       })
     );
 
