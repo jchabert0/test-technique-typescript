@@ -8,13 +8,12 @@ import { unusedValueExportToPlacateAjd } from '@angular/core/src/render3/interfa
 })
 export class ResultService {
 	
-public results: ResultService[];
+public results: ResultModel[];
 
   constructor() 
   
   {
 	this.results = new Array<ResultModel>();
-	this.resultsSeen = new Array<ResultModel>();
   }
 
   public addResult(newResult:ResultModel) {
@@ -22,10 +21,9 @@ public results: ResultService[];
 	}	
 
   public seenResult(idResult:number) {
-	  
-	for (let result of this.results) {
-		if (idResult == result.id) {
-				result.isSeen = true;
+	for(var i = 0; i < this.results.length; i++) {
+		if (this.results[i].id == idResult) {
+				this.results[i].isSeen = true;
 			}
 		}
 	}
@@ -39,7 +37,7 @@ public results: ResultService[];
   }
 
   public getAllResultSeen() : Array<ResultModel> {
-	return this.results.filter(result => result.isSeen = true);
+	return this.results.filter(function (el) {return el.isSeen = true});
   }
 
   public getAllResultUnSeen() : Array<ResultModel> {

@@ -80,7 +80,9 @@ describe('ResultService', () => {
 
     it("devrait avoir 1 resultats vue dans la liste aprés la vision d\'un resultat",
       fakeAsync(() => {
-        expect(false).toEqual(true);
+		resultService.seenResult(2);
+        expect(resultService.getAllResultSeen().length).toEqual(1);
+		expect(resultService.getAllResult()[1].isSeen).toEqual(true);	
       })
     );
 
