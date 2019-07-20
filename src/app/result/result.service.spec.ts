@@ -55,12 +55,15 @@ describe('ResultService', () => {
 	  resultService.addResult(result2);
 	  resultService.addResult(result3);
 	  // Décommenter pour test de l'ajout d'un résultat avec un id existent
-	  // resultService.addResult(result4);
+	  //resultService.addResult(result4);
     });
 
     it("devrait avoir une liste de 3 resultats non vue aprés l\'ajout de 3 resultat.",
       fakeAsync(() => {
         expect(resultService.getAllResult().length).toEqual(3);
+		for (var i = 0; i < resultService.getAllResult().length; i++) {
+				expect(resultService.getAllResult()[i].isSeen).toEqual(false);
+			}		
       })
     );
 
@@ -72,7 +75,6 @@ describe('ResultService', () => {
 				var arrayIdDescending = arrayId.sort((a, b) => a - b); // on tri le tableau contenant les id des résultats pour rendre le calcul qui suit efficace
 					for(var y = 0; y < arrayIdDescending.length; y++) {
 					expect(Math.abs( arrayIdDescending[y++] - arrayIdDescending[y] )).not.toEqual(0);
-					//expect(Math.abs( resultService.getAllResult()[i].id - resultService.getAllResult()[i++].id )).toEqual(0);
 					}
 			}
       })
@@ -80,9 +82,9 @@ describe('ResultService', () => {
 
     it("devrait avoir 1 resultats vue dans la liste aprés la vision d\'un resultat",
       fakeAsync(() => {
-		resultService.seenResult(2);
-        expect(resultService.getAllResultSeen().length).toEqual(1);
-		expect(resultService.getAllResult()[1].isSeen).toEqual(true);	
+		resultService.seenResult(3);
+		expect(resultService.getAllResultSeen().length).toEqual(1);
+		expect(resultService.getAllResult()[2].isSeen).toEqual(true);	
       })
     );
 
@@ -91,16 +93,24 @@ describe('ResultService', () => {
         resultService.seenResult(1);
 		resultService.seenResult(2);
 		resultService.seenResult(3);
+		expect(resultService.getAllResult()[0].isSeen).toEqual(true);
+		expect(resultService.getAllResult()[1].isSeen).toEqual(true);
+		expect(resultService.getAllResult()[2].isSeen).toEqual(true);
         expect(resultService.getAllResultSeen().length).toEqual(3);
-			for (var i = 0; i < resultService.getAllResult().length; i++) {
-				expect(resultService.getAllResult()[i].isSeen).toEqual(true);
-			}		
       })
     );
 
     it("devrait avoir plus que 2 resultats vue dans la liste aprés qu\'il soit tous vue puis 1 ou la vue est enlevé",
       fakeAsync(() => {
-        expect(false).toEqual(true);
+        resultService.seenResult(1);
+		resultService.seenResult(2);
+		resultService.seenResult(3);
+		resultService.unseenResult(3);
+		expect(resultService.getAllResult()[0].isSeen).toEqual(true);
+		expect(resultService.getAllResult()[1].isSeen).toEqual(true);
+		expect(resultService.getAllResult()[2].isSeen).toEqual(false);
+		expect(resultService.getAllResultSeen().length).toEqual(2);
+		expect(resultService.getAllResultUnSeen().length).toEqual(1);
       })
     );
 
@@ -148,5 +158,6 @@ describe('ResultService', () => {
 
 
   /* proposé de nouveau test */
-
+  
+  /* il peut être intéressant de généraliser, avec une boucle, chaque test fait sur les tableaux avec plusieurs résultats initialisés*/
 });
