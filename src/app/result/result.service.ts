@@ -18,17 +18,14 @@ public results: ResultService[];
   }
 
   public addResult(newResult:ResultModel) {
-	
-	this.results.push(newResult);
-	
-  }
+		this.results.push(newResult);
+	}	
 
   public seenResult(idResult:number) {
 	  
 	for (let result of this.results) {
 		if (idResult == result.id) {
 				result.isSeen = true;
-				this.resultsSeen.push(result);
 			}
 		}
 	}
@@ -42,7 +39,7 @@ public results: ResultService[];
   }
 
   public getAllResultSeen() : Array<ResultModel> {
-	return this.resultsSeen;
+	return this.results.filter(result => result.isSeen = true);
   }
 
   public getAllResultUnSeen() : Array<ResultModel> {

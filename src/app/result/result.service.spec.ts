@@ -44,16 +44,18 @@ describe('ResultService', () => {
 
   /* step 2 : 3 resultats */
   describe("aprés l'ajout de 3 resultats,", () => {
-
     beforeEach(() => {
       // init le service avec 3 resultats
 	  const result1: ResultModel = {id: 1,idOwner:11,idRecipients:[111],isSeen:false,eventResults:[],contentOfResult:"Test1"};
 	  const result2: ResultModel = {id: 2,idOwner:22,idRecipients:[222],isSeen:false,eventResults:[],contentOfResult:"Test2"};
 	  const result3: ResultModel = {id: 3,idOwner:33,idRecipients:[333],isSeen:false,eventResults:[],contentOfResult:"Test3"};
+	  const result4: ResultModel = {id: 3,idOwner:33,idRecipients:[333],isSeen:false,eventResults:[],contentOfResult:"Test4"};
       resultService = new ResultService();
       resultService.addResult(result1);
 	  resultService.addResult(result2);
 	  resultService.addResult(result3);
+	  // Décommenter pour test de l'ajout d'un résultat avec un id existent
+	  // resultService.addResult(result4);
     });
 
     it("devrait avoir une liste de 3 resultats non vue aprés l\'ajout de 3 resultat.",
@@ -64,7 +66,15 @@ describe('ResultService', () => {
 
     it("ne devrait pas authorisé l'ajout d'un résultats avec un id existent",
       fakeAsync(() => {
-        expect(false).toEqual(true);
+		    for(var i = 0; i < resultService.getAllResult().length; i++) {
+				var arrayId = [];
+				arrayId.push(resultService.getAllResult()[i].id);
+				var arrayIdDescending = arrayId.sort((a, b) => a - b); // on tri le tableau contenant les id des résultats pour rendre le calcul qui suit efficace
+					for(var y = 0; y < arrayIdDescending.length; y++) {
+					expect(Math.abs( arrayIdDescending[y++] - arrayIdDescending[y] )).not.toEqual(0);
+					//expect(Math.abs( resultService.getAllResult()[i].id - resultService.getAllResult()[i++].id )).toEqual(0);
+					}
+			}
       })
     );
 
