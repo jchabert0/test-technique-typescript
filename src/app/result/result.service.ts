@@ -19,14 +19,14 @@ public resultsUnseen: ResultModel[];
   }
 
   public addResult(newResult:ResultModel) {
+	 
 		this.results.push(newResult);
+	
 	}	
 
   public seenResult(idResult:number) {
 	for(var i = 0; i < this.results.length; i++) {
-		if (this.results[i].id == idResult) {
-				this.results[i].isSeen = true;
-			}
+		if (this.results[i].id == idResult) this.results[i].isSeen = true;
 		}
 	}
 

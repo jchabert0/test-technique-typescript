@@ -39,7 +39,7 @@ describe('ResultService', () => {
         expect(resultService.getAllResultSeen().length).toEqual(1);
         expect(resultService.getAllResult()[0].isSeen).toEqual(true);
       })
-    );
+    )
   });
 
   /* step 2 : 3 resultats */
@@ -54,8 +54,10 @@ describe('ResultService', () => {
       resultService.addResult(result1);
 	  resultService.addResult(result2);
 	  resultService.addResult(result3);
+	  
 	  // Décommenter pour test de l'ajout d'un résultat avec un id existent
 	  //resultService.addResult(result4);
+	  
     });
 
     it("devrait avoir une liste de 3 resultats non vue aprés l\'ajout de 3 resultat.",
@@ -69,14 +71,12 @@ describe('ResultService', () => {
 
     it("ne devrait pas authorisé l'ajout d'un résultats avec un id existent",
       fakeAsync(() => {
-		    for(var i = 0; i < resultService.getAllResult().length; i++) {
-				var arrayId = [];
-				arrayId.push(resultService.getAllResult()[i].id);
-				var arrayIdDescending = arrayId.sort((a, b) => a - b); // on tri le tableau contenant les id des résultats pour rendre le calcul qui suit efficace
-					for(var y = 0; y < arrayIdDescending.length; y++) {
-					expect(Math.abs( arrayIdDescending[y++] - arrayIdDescending[y] )).not.toEqual(0);
-					}
-			}
+			
+				for (var i = 0; i < resultService.getAllResult().length; i++) {
+					
+					// Décommenter pour test de l'ajout d'un résultat avec un id existent
+					//expect(resultService.getAllResult()[3].id - resultService.getAllResult()[i].id).not.toEqual(0);
+			}		
       })
     );
 
@@ -93,9 +93,9 @@ describe('ResultService', () => {
         resultService.seenResult(1);
 		resultService.seenResult(2);
 		resultService.seenResult(3);
-		expect(resultService.getAllResult()[0].isSeen).toEqual(true);
-		expect(resultService.getAllResult()[1].isSeen).toEqual(true);
-		expect(resultService.getAllResult()[2].isSeen).toEqual(true);
+		for (var i = 0; i < resultService.getAllResult().length; i++) {
+				expect(resultService.getAllResult()[i].isSeen).toEqual(true);
+			}		
         expect(resultService.getAllResultSeen().length).toEqual(3);
       })
     );
@@ -116,9 +116,13 @@ describe('ResultService', () => {
 
     it("ne devrait pas planté aprés la vision d\'un resultat non ajouté",
       fakeAsync(() => {
-        expect(false).toEqual(true);
-      })
-    );
+
+			resultService.seenResult(4);
+			for (var i = 0; i < resultService.getAllResult().length; i++) {
+					expect(resultService.getAllResult()[i].isSeen).not.toBeTruthy();
+			}					
+	  })
+	  )
   });
 
 
@@ -159,5 +163,21 @@ describe('ResultService', () => {
 
   /* proposé de nouveau test */
   
-  /* il peut être intéressant de généraliser, avec une boucle, chaque test fait sur les tableaux avec plusieurs résultats initialisés*/
+  /* il peut être intéressant de généraliser, avec une boucle, chaque test fait sur les tableaux avec plusieurs résultats initialisés ...*/
+  /* ... ce que j'ai voulu faire trop vite, avec une grosse perte de temps sur l'efficacitée de mon code*/
+
+
+
+	/*# bugfix
+
+	> balise ul au lieu de de div dans app.componenent
+	> @angular/platform-browser-dynamic": "~8.0.0" au lieu de ~7.2.0 (bug compilater)
+
+	*/
+
+
+
+
+
+
 });
