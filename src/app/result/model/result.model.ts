@@ -7,4 +7,5 @@ export interface ResultModel {
   isSeen:boolean;
   eventResults: ResultEventModel[]; 
   contentOfResult:String;
-}
+  
+  }

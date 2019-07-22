@@ -9,8 +9,6 @@ import { unusedValueExportToPlacateAjd } from '@angular/core/src/render3/interfa
 export class ResultService {
 	
 public results: ResultModel[];
-public resultsSeen: ResultModel[];
-public resultsUnseen: ResultModel[];
 
   constructor() 
   
@@ -39,7 +37,20 @@ public resultsUnseen: ResultModel[];
   }
 
   public getAllResult() : Array<ResultModel> {
-    return this.results;
+	return this.results;
+	/*return this.results.sort( function ( a, b ) {
+		for(var i = 0; i < this.results.length; i++) {
+			for(var y = 0; y < this.results[i].eventResults.length; y++) {
+		  if ( a.eventResults[y].createdAt.getTime() < b.eventResults[y].createdAt.getTime() ){
+			return -1;
+		  }
+		  if ( a.eventResults[y].createdAt.getTime() > b.eventResults[y].createdAt.getTime() ){
+			return 1;
+		  }
+		  return 0;
+		  }
+		}
+		}); */
   }
 
   public getAllResultSeen() : Array<ResultModel> {

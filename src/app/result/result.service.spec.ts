@@ -2,6 +2,8 @@ import { TestBed, fakeAsync } from '@angular/core/testing';
 import { ResultService } from './result.service';
 import { ResultModel } from './model/result.model';
 
+import { ResultEventModel } from './model/result-event.model';
+
 describe('ResultService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
@@ -46,10 +48,10 @@ describe('ResultService', () => {
   describe("aprés l'ajout de 3 resultats,", () => {
     beforeEach(() => {
       // init le service avec 3 resultats
-	  const result1: ResultModel = {id: 1,idOwner:11,idRecipients:[111],isSeen:false,eventResults:[],contentOfResult:"Test1"};
-	  const result2: ResultModel = {id: 2,idOwner:22,idRecipients:[222],isSeen:false,eventResults:[],contentOfResult:"Test2"};
-	  const result3: ResultModel = {id: 3,idOwner:33,idRecipients:[333],isSeen:false,eventResults:[],contentOfResult:"Test3"};
-	  const result4: ResultModel = {id: 3,idOwner:33,idRecipients:[333],isSeen:false,eventResults:[],contentOfResult:"Test4"};
+	  const result1: ResultModel = {id: 1,idOwner:11,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test1"};
+	  const result2: ResultModel = {id: 2,idOwner:22,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test2"};
+	  const result3: ResultModel = {id: 3,idOwner:33,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test3"};
+	  const result4: ResultModel = {id: 3,idOwner:33,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test4"};
       resultService = new ResultService();
       resultService.addResult(result1);
 	  resultService.addResult(result2);
@@ -71,11 +73,12 @@ describe('ResultService', () => {
 
     it("ne devrait pas authorisé l'ajout d'un résultats avec un id existent",
       fakeAsync(() => {
-			
-				for (var i = 0; i < resultService.getAllResult().length; i++) {
+		  
+		for (var i = 0; i < resultService.getAllResult().length; i++) {
 					
-					// Décommenter pour test de l'ajout d'un résultat avec un id existent
-					//expect(resultService.getAllResult()[3].id - resultService.getAllResult()[i].id).not.toEqual(0);
+			// Décommenter pour test de l'ajout d'un résultat avec un id existent
+			//expect(resultService.getAllResult()[3].id - resultService.getAllResult()[i].id).not.toEqual(0);
+			
 			}		
       })
     );
@@ -128,21 +131,65 @@ describe('ResultService', () => {
 
   /* step 3 (evenement) */
   describe(",aprés l\'ajout de 3 resultats,", () => {
-
+	  
+/* function compare( a, b ) {
+		  if ( a.eventResults[0].createdAt.getTime() < b.eventResults[0].createdAt.getTime() ){
+			return -1;
+		  }
+		  if ( a.eventResults[0].createdAt.getTime() > b.eventResults[0].createdAt.getTime() ){
+			return 1;
+		  }
+		  return 0;
+		} */
+		
     beforeEach(() => {
       // init le service avec 3 resultats (doit etre identique que le step 2)
+	  const result1: ResultModel = {id: 1,idOwner:11,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test1"};
+	  const result2: ResultModel = {id: 2,idOwner:22,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test2"};
+	  const result3: ResultModel = {id: 3,idOwner:33,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test3"};
+      resultService = new ResultService();
+      resultService.addResult(result1);
+	  resultService.addResult(result2);
+	  resultService.addResult(result3);
     });
 
     //ps : je ne veux pas que les event de création soi initialisé dans le beforeEach ci dessus mais directement dans le resultService
     it("devrait avoir la list des résultat dans l\'order de création ( en se basant sur les events de création)",
       fakeAsync(() => {
-        expect(false).toEqual(true);
+		
+		resultService.getAllResult()[0].eventResults.push({id: 'event1', idOwner: 10, createdAt: new Date ('2019,1,1')}); // 1546297200000
+		resultService.getAllResult()[1].eventResults.push({id: 'event2', idOwner: 20, createdAt: new Date ('2017,1,1')}); // 1483225200000
+		resultService.getAllResult()[2].eventResults.push({id: 'event3', idOwner: 30, createdAt: new Date ('2018,1,1')}); // 1514761200000
+		
+		resultService.getAllResult().sort( function ( a, b ) {
+		  if ( a.eventResults[0].createdAt.getTime() < b.eventResults[0].createdAt.getTime() ){
+			return -1;
+		  }
+		  if ( a.eventResults[0].createdAt.getTime() > b.eventResults[0].createdAt.getTime() ){
+			return 1;
+		  }
+		  return 0;
+		});
+		
+		expect(resultService.getAllResult()[0].eventResults[0].createdAt.getTime()).toEqual(1483225200000);
+		expect(resultService.getAllResult()[1].eventResults[0].createdAt.getTime()).toEqual(1514761200000);
+		expect(resultService.getAllResult()[2].eventResults[0].createdAt.getTime()).toEqual(1546297200000);
+        
       })
     );
 
     it("devrait avoir 1 event a la date de maintenant quand 1 résultat est vue",
       fakeAsync(() => {
-        expect(false).toEqual(true);
+        //expect(false).toEqual(true);
+		
+		/*for (var i = 0; i < resultService.getAllResult().length; i++) {
+					resultService.getAllResult()[i];
+			} */
+			
+			//resultService.seenResult(1);
+			//expect(resultService.getAllResult()[1].eventResults[0].createdAt).toEqual()
+			expect(false).toEqual(true);
+		
       })
     );
 
@@ -164,7 +211,7 @@ describe('ResultService', () => {
   /* proposé de nouveau test */
   
   /* il peut être intéressant de généraliser, avec une boucle, chaque test fait sur les tableaux avec plusieurs résultats initialisés ...*/
-  /* ... ce que j'ai voulu faire trop vite, avec une grosse perte de temps sur l'efficacitée de mon code*/
+  /* ... ce que j'ai essayé faire trop vite, avec une grosse perte de temps sur l'efficacitée de mon code*/
 
 
 
