@@ -17,14 +17,22 @@ public results: ResultModel[];
   }
 
   public addResult(newResult:ResultModel) {
-	 
+	  
+		newResult.eventResults.push(
+			{id: 'created', idOwner: newResult.idOwner, createdAt: new Date()},
+			{id: 'seen', idOwner: newResult.idOwner, createdAt: null},
+			{id: 'unseen', idOwner: newResult.idOwner, createdAt: null},
+		);
 		this.results.push(newResult);
+  }
 	
-	}	
-
   public seenResult(idResult:number) {
+		
 	for(var i = 0; i < this.results.length; i++) {
-		if (this.results[i].id == idResult) this.results[i].isSeen = true;
+		if (this.results[i].id == idResult) {
+			this.results[i].isSeen = true;
+			this.results[i].eventResults[1].createdAt = new Date();
+			}
 		}
 	}
 
@@ -32,25 +40,22 @@ public results: ResultModel[];
     for(var i = 0; i < this.results.length; i++) {
 		if (this.results[i].id == idResult) {
 				this.results[i].isSeen = false;
+				this.results[i].eventResults[2].createdAt = new Date();
 			}
 		}
   }
 
   public getAllResult() : Array<ResultModel> {
-	return this.results;
-	/*return this.results.sort( function ( a, b ) {
-		for(var i = 0; i < this.results.length; i++) {
-			for(var y = 0; y < this.results[i].eventResults.length; y++) {
-		  if ( a.eventResults[y].createdAt.getTime() < b.eventResults[y].createdAt.getTime() ){
+		
+		return this.results.sort( function ( a, b ) {
+		  if ( a.eventResults[0].createdAt.getTime() < b.eventResults[0].createdAt.getTime() ){
 			return -1;
 		  }
-		  if ( a.eventResults[y].createdAt.getTime() > b.eventResults[y].createdAt.getTime() ){
+		  if ( a.eventResults[0].createdAt.getTime() > b.eventResults[0].createdAt.getTime() ){
 			return 1;
 		  }
 		  return 0;
-		  }
-		}
-		}); */
+		});
   }
 
   public getAllResultSeen() : Array<ResultModel> {

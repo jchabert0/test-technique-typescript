@@ -131,16 +131,6 @@ describe('ResultService', () => {
 
   /* step 3 (evenement) */
   describe(",aprés l\'ajout de 3 resultats,", () => {
-	  
-/* function compare( a, b ) {
-		  if ( a.eventResults[0].createdAt.getTime() < b.eventResults[0].createdAt.getTime() ){
-			return -1;
-		  }
-		  if ( a.eventResults[0].createdAt.getTime() > b.eventResults[0].createdAt.getTime() ){
-			return 1;
-		  }
-		  return 0;
-		} */
 		
     beforeEach(() => {
       // init le service avec 3 resultats (doit etre identique que le step 2)
@@ -148,7 +138,7 @@ describe('ResultService', () => {
 	  const result2: ResultModel = {id: 2,idOwner:22,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test2"};
 	  const result3: ResultModel = {id: 3,idOwner:33,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test3"};
       resultService = new ResultService();
-      resultService.addResult(result1);
+	  resultService.addResult(result1);
 	  resultService.addResult(result2);
 	  resultService.addResult(result3);
     });
@@ -156,46 +146,33 @@ describe('ResultService', () => {
     //ps : je ne veux pas que les event de création soi initialisé dans le beforeEach ci dessus mais directement dans le resultService
     it("devrait avoir la list des résultat dans l\'order de création ( en se basant sur les events de création)",
       fakeAsync(() => {
-		
-		resultService.getAllResult()[0].eventResults.push({id: 'event1', idOwner: 10, createdAt: new Date ('2019,1,1')}); // 1546297200000
-		resultService.getAllResult()[1].eventResults.push({id: 'event2', idOwner: 20, createdAt: new Date ('2017,1,1')}); // 1483225200000
-		resultService.getAllResult()[2].eventResults.push({id: 'event3', idOwner: 30, createdAt: new Date ('2018,1,1')}); // 1514761200000
-		
-		resultService.getAllResult().sort( function ( a, b ) {
-		  if ( a.eventResults[0].createdAt.getTime() < b.eventResults[0].createdAt.getTime() ){
-			return -1;
-		  }
-		  if ( a.eventResults[0].createdAt.getTime() > b.eventResults[0].createdAt.getTime() ){
-			return 1;
-		  }
-		  return 0;
-		});
-		
-		expect(resultService.getAllResult()[0].eventResults[0].createdAt.getTime()).toEqual(1483225200000);
-		expect(resultService.getAllResult()[1].eventResults[0].createdAt.getTime()).toEqual(1514761200000);
-		expect(resultService.getAllResult()[2].eventResults[0].createdAt.getTime()).toEqual(1546297200000);
-        
+				for (var i = 0; i < resultService.getAllResult().length; i++) {
+					expect(resultService.getAllResult()[i].eventResults[0].id).toBe('created');
+					expect(resultService.getAllResult()[i].eventResults[0].createdAt.getMilliseconds()).toEqual(new Date ().getMilliseconds());	
+			}				
       })
     );
 
     it("devrait avoir 1 event a la date de maintenant quand 1 résultat est vue",
       fakeAsync(() => {
-        //expect(false).toEqual(true);
-		
-		/*for (var i = 0; i < resultService.getAllResult().length; i++) {
-					resultService.getAllResult()[i];
-			} */
-			
-			//resultService.seenResult(1);
-			//expect(resultService.getAllResult()[1].eventResults[0].createdAt).toEqual()
-			expect(false).toEqual(true);
+		  
+		resultService.seenResult(1);
+		expect(resultService.getAllResult()[0].eventResults[1].id).toBe('seen');
+		expect(resultService.getAllResult()[0].eventResults[1].createdAt.getMilliseconds()).toEqual(new Date().getMilliseconds());
 		
       })
     );
 
     it("devrait avoir 2 events avec 2 dates différent aprés la vision d\'un resultat puis la suppression de la vision",
       fakeAsync(() => {
-        expect(false).toEqual(true);
+      
+		resultService.seenResult(1);
+		expect(resultService.getAllResult()[0].eventResults[1].id).toBe('seen');
+		expect(resultService.getAllResult()[0].eventResults[1].createdAt.getMilliseconds()).toEqual(new Date().getMilliseconds());
+		resultService.unseenResult(1);
+		expect(resultService.getAllResult()[0].eventResults[2].id).toBe('unseen');
+		expect(resultService.getAllResult()[0].eventResults[2].createdAt.getMilliseconds()).toEqual(new Date().getMilliseconds());
+
       })
     );
 
@@ -209,10 +186,6 @@ describe('ResultService', () => {
 
 
   /* proposé de nouveau test */
-  
-  /* il peut être intéressant de généraliser, avec une boucle, chaque test fait sur les tableaux avec plusieurs résultats initialisés ...*/
-  /* ... ce que j'ai essayé faire trop vite, avec une grosse perte de temps sur l'efficacitée de mon code*/
-
 
 
 	/*# bugfix
