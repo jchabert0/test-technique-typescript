@@ -51,15 +51,11 @@ describe('ResultService', () => {
 	  const result1: ResultModel = {id: 1,idOwner:11,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test1"};
 	  const result2: ResultModel = {id: 2,idOwner:22,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test2"};
 	  const result3: ResultModel = {id: 3,idOwner:33,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test3"};
-	  const result4: ResultModel = {id: 3,idOwner:33,idRecipients:[],isSeen:false,eventResults:[],contentOfResult:"Test4"};
       resultService = new ResultService();
       resultService.addResult(result1);
 	  resultService.addResult(result2);
 	  resultService.addResult(result3);
-	  
-	  // Décommenter pour test de l'ajout d'un résultat avec un id existent
-	  //resultService.addResult(result4);
-	  
+	
     });
 
     it("devrait avoir une liste de 3 resultats non vue aprés l\'ajout de 3 resultat.",
@@ -75,11 +71,12 @@ describe('ResultService', () => {
       fakeAsync(() => {
 		  
 		for (var i = 0; i < resultService.getAllResult().length; i++) {
-					
-			// Décommenter pour test de l'ajout d'un résultat avec un id existent
-			//expect(resultService.getAllResult()[3].id - resultService.getAllResult()[i].id).not.toEqual(0);
+		
+			expect(resultService.getAllResult()[i].id - resultService.getAllResult()[0].id).not.toEqual(0);
+			expect(resultService.getAllResult()[i].id - resultService.getAllResult()[1].id).not.toEqual(0);
+			expect(resultService.getAllResult()[i].id - resultService.getAllResult()[2].id).not.toEqual(0);
 			
-			}		
+			}	
       })
     );
 
@@ -170,19 +167,28 @@ describe('ResultService', () => {
 		expect(resultService.getAllResult()[0].eventResults[1].id).toBe('seen');
 		expect(resultService.getAllResult()[0].eventResults[1].createdAt.getMilliseconds()).toEqual(new Date().getMilliseconds());
 		resultService.unseenResult(1);
-		expect(resultService.getAllResult()[0].eventResults[2].id).toBe('unseen');
-		expect(resultService.getAllResult()[0].eventResults[2].createdAt.getMilliseconds()).toEqual(new Date().getMilliseconds());
+		expect(resultService.getAllResult()[0].eventResults[0].createdAt.getMilliseconds()).toEqual(new Date().getMilliseconds());
 
       })
     );
 
     it("devrait avoir une fonction qui retourne une liste ordonnée des resultats par rapport au dernier modifier",
       fakeAsync(() => {
-        expect(false).toEqual(true);
-      })
+		 /*
+        resultService.seenResult(1);
+	    resultService.seenResult(2);
+	    resultService.seenResult(3);
+			for (var i = 0; i < resultService.getAllResult().length; i++) {
+				for (var y = 0; y < 3; y++) {
+				expect(resultService.getAllResult()[i].eventResults[y].createdAt.getMilliseconds()).toEqual(new Date ().getMilliseconds());									
+			}
+		}			
+      });
     );
-
-  });
+	*/
+	expect(false).toEqual(true);
+  })
+  );
 
 
   /* proposé de nouveau test */
@@ -195,9 +201,5 @@ describe('ResultService', () => {
 
 	*/
 
-
-
-
-
-
-});
+	})
+  });
